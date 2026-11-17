@@ -238,3 +238,13 @@ GitHub: [@nirjara-pixel](https://github.com/nirjara-pixel)
 ---
 
 ⭐ If you find this project interesting, consider giving the repository a star!
+## 📸 Application Screenshots
+
+### 1. Dashboard & Analytics
+![SmartAttend Dashboard](assets/screenshots/dashboard.png)
+
+### 2. Live Face Recognition
+![Live Recognition](assets/screenshots/live-recognition.png)
+
+### 3. Student Registration
+![Student Registration](assets/screenshots/student-registration.png)
