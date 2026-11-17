@@ -1,47 +1,54 @@
 # SmartAttend – Face Recognition Attendance Management System
 
-**SmartAttend** is an enterprise-grade desktop attendance management software powered by Python, OpenCV, Haar Cascade face detection, Local Binary Patterns Histograms (LBPH) face recognition, SQLite, and a modern Tkinter desktop GUI.
+**SmartAttend** is an AI-powered desktop attendance management application built using Python, OpenCV, Haar Cascade face detection, Local Binary Patterns Histograms (LBPH) face recognition, SQLite, and Tkinter.
 
----
+It automates student attendance by identifying registered faces through a live webcam stream and recording attendance in a centralized database.
 
 ## 🌟 Key Features
 
-- **Live Facial Recognition Attendance**: Automatically identifies registered students from a live webcam stream and records daily attendance in SQLite in real time.
-- **Duplicate Attendance Prevention**: Guaranteed by SQLite database-level constraints (`UNIQUE(student_id, date)`) preventing repeated attendance on the same day.
-- **In-Memory Debounce Cooldown**: Prevents redundant database queries and repeated writes while a recognized student remains in front of the camera.
-- **Unknown Face Rejection**: Highlights unrecognized faces with red HUD bounding boxes and rejects unauthorized access without polluting the attendance log.
-- **Dataset Acquisition**: Automated webcam-assisted capture of 200×200 normalized, histogram-equalized facial crops with head pose guidance (straight, tilt, expressions).
-- **LBPH Model Training**: Trains and serializes `cv2.face.LBPHFaceRecognizer` weights to `trainer/trainer.yml` with companion JSON metadata.
-- **Interactive Dashboard**:
-  - Live KPI statistics cards: **Total Students**, **Present Today**, **Absent Today**, and **Attendance Rate (%)**.
-  - Modern dark-blue sidebar navigation and light card workspace.
-  - Non-blocking multithreaded camera streams and progress bars.
-  - Real-time searchable and date-filtered attendance table with CSV report export.
-
----
+- **Live Facial Recognition:** Identifies registered students through a real-time webcam stream.
+- **Automated Attendance:** Automatically records attendance in SQLite.
+- **Duplicate Attendance Prevention:** Database-level UNIQUE constraints prevent repeated attendance entries for the same student on the same day.
+- **Recognition Cooldown:** In-memory debounce mechanism prevents redundant database queries and repeated writes.
+- **Unknown Face Rejection:** Detects and labels unrecognized faces without recording attendance.
+- **Face Dataset Acquisition:** Captures normalized 200×200 facial images using webcam-based registration.
+- **LBPH Model Training:** Trains and saves facial recognition models using OpenCV.
+- **Interactive Dashboard:** Displays live attendance statistics and student information.
+- **Attendance Management:** Search and filter attendance records.
+- **CSV Export:** Generate attendance reports for further analysis.
+- **Multithreaded Camera Processing:** Keeps webcam operations from blocking the GUI.
 
 ## 🏗️ Project Architecture
 
-```
+```text
 SmartAttend/
+│
 ├── cascades/
-│   └── haarcascade_frontalface_default.xml # Haar Cascade Classifier XML
+│   └── haarcascade_frontalface_default.xml
+│
 ├── data/
-│   └── smartattend.db                      # SQLite relational database
-├── dataset/                                # Registered student facial crops
+│   └── smartattend.db
+│
+├── dataset/
 │   └── <student_id>/
-│       └── sample_001.jpg ...
-├── exports/                                # Generated CSV attendance reports
+│       └── sample_001.jpg
+│
+├── exports/
+│
+├── trainer/
+│   ├── trainer.yml
+│   └── metadata.json
+│
 ├── gui/
 │   ├── __init__.py
-│   ├── theme.py                            # Professional color palettes and fonts
-│   ├── dashboard.py                        # Main Tkinter desktop shell & Overview
-│   ├── register.py                         # Student Registration & Camera Capture
-│   ├── recognition_view.py                 # Live Face Recognition & Attendance
-│   ├── attendance_view.py                  # Searchable Table & CSV Export
-│   └── train_view.py                       # Model Training & Calibration
-├── tests/                                  # Automated Test Suite (56 tests)
-│   ├── __init__.py
+│   ├── theme.py
+│   ├── dashboard.py
+│   ├── register.py
+│   ├── recognition_view.py
+│   ├── attendance_view.py
+│   └── train_view.py
+│
+├── tests/
 │   ├── test_face_detector.py
 │   ├── test_database.py
 │   ├── test_student_registration.py
@@ -49,107 +56,185 @@ SmartAttend/
 │   ├── test_face_recognition.py
 │   ├── test_attendance_manager.py
 │   └── test_gui.py
-├── trainer/
-│   ├── trainer.yml                         # Trained LBPH model weights
-│   └── metadata.json                       # Hyperparameters & student roster
-├── config.py                               # Global configurations and parameters
-├── database.py                             # SQLite Database Manager & CRUD
-├── face_detector.py                        # Haar Cascade detector & ROI extractor
-├── face_recognition.py                     # LBPH inference & confidence scoring
-├── student_registration.py                 # Dataset collection & DB synchronization
-├── train_model.py                          # LBPH model trainer & serializer
-├── attendance_manager.py                   # Attendance logging & debounce logic
-├── main.py                                 # Application entry point
-├── requirements.txt                        # Python dependencies
-└── README.md                               # Project documentation
+│
+├── config.py
+├── database.py
+├── face_detector.py
+├── face_recognition.py
+├── student_registration.py
+├── train_model.py
+├── attendance_manager.py
+├── main.py
+├── requirements.txt
+├── .gitignore
+└── README.md
 ```
-
----
 
 ## 🛠️ Technology Stack
 
-- **Python 3.10+ / 3.14**
-- **OpenCV (`opencv-contrib-python`)**: Haar Cascade face localization and LBPH face recognition.
-- **Pillow (PIL)**: High-performance frame conversion for Tkinter canvas rendering.
-- **SQLite3**: ACID-compliant persistent storage with foreign keys and unique constraints.
-- **NumPy**: Multidimensional array processing for facial matrices.
-- **Pandas**: Tabular attendance aggregation and CSV report generation.
-- **Tkinter & ttk**: Native desktop GUI with custom styled cards and tables.
-
----
+| Technology | Purpose |
+|---|---|
+| Python | Core programming language |
+| OpenCV | Computer vision and image processing |
+| Haar Cascade | Face detection |
+| LBPH | Facial recognition |
+| NumPy | Image matrix processing |
+| Pandas | Data handling and reporting |
+| SQLite3 | Relational database management |
+| Tkinter & ttk | Desktop application interface |
+| Pillow | Image rendering |
+| Unittest | Automated testing |
 
 ## 🚀 Getting Started
 
-### 1. Prerequisites
+### Prerequisites
 
-Ensure Python is installed on your system. Verify via Windows PowerShell:
-```powershell
-python --version
+- Python 3.10 or higher
+- Webcam
+- Windows/Linux desktop environment
+- Git
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/nirjara-pixel/SmartAttend.git
 ```
 
-### 2. Install Dependencies
+### 2. Navigate to the Project Directory
 
-Install the required packages using pip:
+```bash
+cd SmartAttend
+```
+
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the Environment
+
+Windows PowerShell:
+
 ```powershell
+venv\Scripts\activate
+```
+
+### 5. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-### 3. Launch SmartAttend
+### 6. Launch SmartAttend
 
-Run the main application:
-```powershell
+```bash
 python main.py
 ```
 
-Optional CLI flags:
-```powershell
-# Display version
-python main.py --version
+Optional commands:
 
-# Train or retrain LBPH model directly from the command line
+```bash
+python main.py --version
+```
+
+Train or retrain the LBPH model:
+
+```bash
 python main.py --train
 ```
 
----
+## 📋 Application Workflow
 
-## 📋 Step-by-Step Workflow
+### 1. Launch Dashboard
 
-1. **Launch Application**: Execute `python main.py`. The dashboard opens with system statistics.
-2. **Register Students**:
-   - Navigate to **👤 Student Registration**.
-   - Enter **Student ID** (e.g. `STU101`), **Name** (e.g. `Alice Smith`), and **Course** (e.g. `Computer Science`).
-   - Click **▶ Start Face Capture & Register**.
-   - Face the camera while the progress bar collects and normalizes face crops into `dataset/STU101/`.
-   - Register at least **2 distinct students**.
-3. **Train LBPH Model**:
-   - Accept the post-registration prompt or navigate to **⚙️ Model Calibration**.
-   - Click **⚡ Train / Retrain LBPH Model**.
-   - The model trains and writes to `trainer/trainer.yml`.
-4. **Live Attendance Recognition**:
-   - Navigate to **🎥 Live Recognition**.
-   - Click **▶ Start Recognition**.
-   - Registered students will be framed with green bounding boxes, showing name, ID, and match confidence. Attendance is instantly marked in SQLite.
-   - Unrecognized faces appear with red "Unknown" badges and are ignored from attendance logs.
-5. **View & Export Attendance**:
-   - Navigate to **📋 Attendance Records**.
-   - Filter by date or search by student name/ID.
-   - Click **📥 Export to CSV** to export the official report.
+Run `python main.py` to open the SmartAttend desktop dashboard.
 
----
+### 2. Register Students
+
+- Navigate to Student Registration.
+- Enter Student ID, Name, and Course.
+- Start webcam-based face capture.
+- Capture multiple facial samples.
+- Store processed images in the student's dataset folder.
+
+### 3. Train the Recognition Model
+
+- Navigate to Model Calibration.
+- Select Train / Retrain LBPH Model.
+- Generate the trained model.
+- Save model weights in `trainer/trainer.yml`.
+
+### 4. Start Live Face Recognition
+
+- Navigate to Live Recognition.
+- Start the webcam.
+- Identify registered students.
+- Display recognized student information.
+- Reject unknown faces.
+
+### 5. Manage Attendance
+
+- Automatically record recognized students.
+- Prevent duplicate daily attendance.
+- View attendance records.
+- Search and filter records by date or student.
+
+### 6. Export Reports
+
+- Navigate to Attendance Records.
+- Apply the required filters.
+- Export attendance reports in CSV format.
 
 ## 🧪 Automated Testing
 
-SmartAttend includes a comprehensive test suite (56 tests) mocking webcam and hardware dependencies so the entire suite runs in any environment without a physical camera:
+SmartAttend includes unit and integration tests covering its core functionality.
+
+Run the complete test suite:
 
 ```powershell
-# Run the complete test suite with verbose output
 python -m unittest discover tests -v
 ```
 
-All 56 unit and integration tests verify:
-- Haar cascade face detection and boundary normalization
-- SQLite schema, foreign keys, and duplicate attendance prevention
-- Dataset collection, sequential file naming, and failure cleanup
-- LBPH training, model persistence, and prediction scoring
-- In-memory debounce cooldown and unknown face filtering
-- Tkinter GUI shell, navigation, and statistics updates
+**Development testing result: 56 tests passed.**
+
+The test suite covers:
+
+- Haar Cascade face detection.
+- Face preprocessing and ROI extraction.
+- SQLite database operations.
+- Foreign key constraints.
+- Duplicate attendance prevention.
+- Student registration and dataset collection.
+- LBPH model training and persistence.
+- Face recognition and unknown-face handling.
+- Attendance debounce logic.
+- GUI initialization and navigation.
+
+## 🔮 Future Enhancements
+
+- Excel attendance export.
+- Advanced attendance analytics and visualizations.
+- Improved recognition under varying lighting conditions.
+- Admin authentication and role-based access.
+- Liveness detection to reduce photo-based spoofing.
+- Enhanced student and attendance management.
+
+## 🔐 Privacy and Security
+
+- Student facial datasets contain sensitive personal information.
+- Database files and facial datasets should remain private.
+- Do not upload real student images or personal records to a public repository.
+- LBPH recognition alone does not provide liveness detection.
+
+## 👩‍💻 Author
+
+**Nirjara Jain**
+
+B.Tech – Computer Science and Engineering
+
+GitHub: [@nirjara-pixel](https://github.com/nirjara-pixel)
+
+---
+
+⭐ If you find this project interesting, consider giving the repository a star!
